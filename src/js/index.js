@@ -34,7 +34,10 @@ function App() {
         </button>
         </li>`;
       };
-      $("#espresso-menu-list").insertAdjacentHTML('beforeend', menuItemTemplate(espressoMenuName))
+      $("#espresso-menu-list").insertAdjacentHTML('beforeend', menuItemTemplate(espressoMenuName));
+      // $(".menu-count").innerHTML = `총 ${$('#espresso-menu-list').childElementCount} 개`;
+      const menuCount = $('#espresso-menu-list').querySelectorAll("li").length;
+      $(".menu-count").innerText = `총 ${menuCount} 개`
     }
   });
 }
