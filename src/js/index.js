@@ -6,7 +6,8 @@ const store = {
     localStorage.setItem('menu', JSON.stringify(menu));
   },
   getLocalStorage() {
-    return localStorage.getItem('menu');
+    // 배열을 순회할 수 있게 문자열을 JSON.parse을 이용해 객체로 바꿔줌
+    return JSON.parse(localStorage.getItem('menu'));
   },
 };
 
