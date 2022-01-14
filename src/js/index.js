@@ -1,6 +1,18 @@
 const $ = (selector) => document.querySelector(selector);
 
+const store = {
+  setLocalStorage(menu) {
+    // JSON.stringify() -> 값이나 객체를 JSON 문자열로 변환
+    localStorage.setItem('menu', JSON.stringify(menu));
+  },
+  getLocalStorage() {
+    localStorage.getItem('menu');
+  },
+};
+
 function App() {
+  // 상태(변하는 데이터, 이 앱에서 변하는 것이 무엇인가?) - 메뉴명 
+
   // 메뉴를 추가할 때
   const addMenuName = () => {
     if ($('#espresso-menu-name').value === '') {
