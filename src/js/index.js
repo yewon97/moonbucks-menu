@@ -34,7 +34,7 @@ function App() {
         </button>
         </li>`;
       };
-      $("#espresso-menu-list").innerHTML = menuItemTemplate(espressoMenuName);
+      $("#espresso-menu-list").insertAdjacentHTML('beforeend', menuItemTemplate(espressoMenuName))
     }
   });
 }
