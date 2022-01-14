@@ -103,7 +103,9 @@ function App() {
   // 메뉴 품절 함수
   const soldOutMenu = (e) => {
     const menuId = e.target.closest('li').dataset.menuId;
-    this.menu[this.currentCategory][menuId].soldOut = true;
+    this.menu[this.currentCategory][menuId].soldOut = !this.menu[this.currentCategory][menuId].soldOut; // 토글 형식으로 만듬
+    // undefined의 ! => true
+    // true 의 ! => false
     store.setLocalStorage(this.menu);
     render();
   }
