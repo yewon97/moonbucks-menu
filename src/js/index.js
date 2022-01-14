@@ -37,10 +37,10 @@ function App() {
       .map((item, index) => {
         return `
       <li data-menu-id="${index}" class="menu-list-item d-flex items-center py-2">
-      <span class="w-100 pl-2 menu-name">${item.name}</span>
+      <span class="${item.soldOut ? "sold-out" : ""} w-100 pl-2 menu-name">${item.name}</span>
       <button
-      type="button"
-      class="bg-gray-50 text-gray-500 text-sm mr-1 menu-sold-out-button"
+        type="button"
+        class="bg-gray-50 text-gray-500 text-sm mr-1 menu-sold-out-button"
       > 
       품절
       </button>
@@ -100,16 +100,30 @@ function App() {
       updateMenuCount();
     }
   };
+  // 메뉴 품절 함수
+  const soldOutMenu = (e) => {
+    const menuId = e.target.closest('li').dataset.menuId;
+    this.menu[this.currentCategory][menuId].soldOut = true;
+    store.setLocalStorage(this.menu);
+    render();
+  }
 
-  // 메뉴 수정할 때 & 메뉴 삭제 할 때
+  // 메뉴 수정할 때 & 메뉴 삭제 할 때 & 메뉴 품절 일 때
   $('#menu-list').addEventListener('click', (e) => {
     // 메뉴 수정
     if (e.target.classList.contains('menu-edit-button')) {
       updateMenuName(e);
+      return; // 불필요한 if문 밑의 연산들이 작동안하게 하기 위해서 쓴다
     }
     // 메뉴 삭제
     if (e.target.classList.contains('menu-remove-button')) {
       removeMenuName(e);
+      return;
+    }
+    // 메뉴 품절
+    if (e.target.classList.contains('menu-sold-out-button')) {
+      soldOutMenu(e);
+      return;
     }
   });
 
