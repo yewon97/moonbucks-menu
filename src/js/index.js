@@ -94,4 +94,5 @@ function App() {
   });
 }
 
-App();
+// new 키워드를 사용하여 생성자 함수를 호출하게 되면 이때의 this는 "만들어질 객체"를 참조한다.
+const app = new App();
