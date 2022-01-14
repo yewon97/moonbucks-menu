@@ -17,10 +17,37 @@ function App() {
   // App이라는 함수가 인스턴스로 생성이 될 때 로컬스토리지 안에 있는 것을 불러오면 좋을 것 같음
   // App이 생성될 때 실행을 하기 위해서 초기화 한다는 말의 init 메서드를 생성
   this.init = () => {
-    if(store.getLocalStorage().length > 1) {
+    if (store.getLocalStorage().length > 1) {
       this.menu = store.getLocalStorage();
     }
-  }
+    render();
+  };
+
+  // 데이터 그려주는 로직 (재사용)
+  const render = () => {
+    const template = this.menu
+      .map((item, index) => {
+        return `
+      <li data-menu-id="${index}" class="menu-list-item d-flex items-center py-2">
+      <span class="w-100 pl-2 menu-name">${item.name}</span>
+      <button
+        type="button"
+        class="bg-gray-50 text-gray-500 text-sm mr-1 menu-edit-button"
+      >
+        수정
+      </button>
+      <button
+        type="button"
+        class="bg-gray-50 text-gray-500 text-sm menu-remove-button"
+      >
+        삭제
+      </button>
+      </li>`;
+      })
+      .join('');
+    $('#espresso-menu-list').innerHTML = template;
+    updateMenuCount();
+  };
 
   // 메뉴 개수 카운팅
   const updateMenuCount = () => {
@@ -36,28 +63,7 @@ function App() {
     const espressoMenuName = $('#espresso-menu-name').value;
     this.menu.push({ name: espressoMenuName });
     store.setLocalStorage(this.menu);
-    const template = this.menu
-      .map((item, index) => {
-        return `
-        <li data-menu-id="${index}" class="menu-list-item d-flex items-center py-2">
-        <span class="w-100 pl-2 menu-name">${item.name}</span>
-        <button
-          type="button"
-          class="bg-gray-50 text-gray-500 text-sm mr-1 menu-edit-button"
-        >
-          수정
-        </button>
-        <button
-          type="button"
-          class="bg-gray-50 text-gray-500 text-sm menu-remove-button"
-        >
-          삭제
-        </button>
-        </li>`;
-      })
-      .join('');
-    $('#espresso-menu-list').innerHTML = template;
-    updateMenuCount();
+    render();
     $('#espresso-menu-name').value = '';
   };
   // 메뉴 수정 함수
