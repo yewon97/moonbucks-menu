@@ -7,19 +7,37 @@
 const $ = (selector) => document.querySelector(selector);
 
 function App() {
-  // 이벤트 위임하기 - e.target
+  // 메뉴 개수 카운팅
+  const updateMenuCount = () => {
+    const menuCount = $('#espresso-menu-list').querySelectorAll('li').length;
+    $('.menu-count').innerText = `총 ${menuCount} 개`;
+  };
+
+  // 메뉴 수정할 때 & 메뉴 삭제 할 때
   $('#espresso-menu-list').addEventListener('click', (e) => {
-    if(e.target.classList.contains('menu-edit-button')) {
-      const $menuName = e.target.closest("li").querySelector(".menu-name");
+    // 메뉴 수정
+    if (e.target.classList.contains('menu-edit-button')) {
+      const $menuName = e.target.closest('li').querySelector('.menu-name');
       const updatedMenuName = prompt('메뉴명을 수정하세요.', $menuName.innerText);
       $menuName.innerText = updatedMenuName;
     }
-  })
 
+    // 메뉴 삭제
+    if (e.target.classList.contains('menu-remove-button')) {
+      const removeMenuName = confirm('정말 삭제하시겠습니까?');
+      if (removeMenuName) {
+        e.target.closest('li').remove();
+        updateMenuCount();
+      }
+    }
+  });
+
+  // form태그 새로고침 막아주는 것
   $('#espresso-menu-form').addEventListener('submit', (e) => {
     e.preventDefault();
   });
 
+  // 메뉴를 추가할 때
   const addMenuName = () => {
     if ($('#espresso-menu-name').value === '') {
       alert('값을 입력해주세요!');
@@ -45,13 +63,14 @@ function App() {
         </li>`;
     };
     $('#espresso-menu-list').insertAdjacentHTML('beforeend', menuItemTemplate(espressoMenuName));
-    const menuCount = $('#espresso-menu-list').querySelectorAll('li').length;
-    $('.menu-count').innerText = `총 ${menuCount} 개`;
+    updateMenuCount();
     $('#espresso-menu-name').value = '';
   };
 
+  // 확인 버튼을 눌렀을 때
   $('#espresso-menu-submit-button').addEventListener('click', () => addMenuName());
 
+  // 엔터키를 눌렀을 때
   $('#espresso-menu-name').addEventListener('keypress', (e) => {
     if (e.key !== 'Enter') {
       return;
