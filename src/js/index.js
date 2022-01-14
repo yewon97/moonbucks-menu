@@ -12,8 +12,14 @@ const store = {
 };
 
 function App() {
-  // 상태(변하는 데이터, 이 앱에서 변하는 것이 무엇인가?) - 메뉴명
-  this.menu = [];
+  // 객체로 각 카테고리 관리하기
+  this.menu = {
+    espresso: [],
+    frappuccino: [],
+    blended: [],
+    teavana: [],
+    desert: [],
+  };
 
   // App이라는 함수가 인스턴스로 생성이 될 때 로컬스토리지 안에 있는 것을 불러오면 좋을 것 같음
   // App이 생성될 때 실행을 하기 위해서 초기화 한다는 말의 init 메서드를 생성
