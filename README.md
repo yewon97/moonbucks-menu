@@ -69,12 +69,26 @@
 
 ## 🎯 step2 요구사항 - 상태 관리로 메뉴 관리하기
 
+#### 🔅 TODO localStorage Read & Write
 - [ ] [localStorage](https://developer.mozilla.org/ko/docs/Web/API/Window/localStorage)에 데이터를 저장하여 새로고침해도 데이터가 남아있게 한다.
-- [ ] 에스프레소, 프라푸치노, 블렌디드, 티바나, 디저트 각각의 종류별로 메뉴판을 관리할 수 있게 만든다.
-  - [ ] 페이지에 최초로 접근할 때는 에스프레소 메뉴가 먼저 보이게 한다.
-- [ ] 품절 상태인 경우를 보여줄 수 있게, 품절 버튼을 추가하고 `sold-out` class를 추가하여 상태를 변경한다.
-- 품절 상태 메뉴의 마크업
-
+  - [ ] localStorage에 데이터를 저장한다.
+  - [ ] localStorage에 데이터를 읽어온다.
+#### 🔅 TODO 카테고리별 메뉴판 관리
+- [ ] 각각의 종류별로 메뉴판을 관리할 수 있게 만든다.
+  - [ ] 에스프레소 메뉴판 관리
+  - [ ] 프라푸치노 메뉴판 관리
+  - [ ] 블렌디드 메뉴판 관리
+  - [ ] 티바나 메뉴판 관리
+  - [ ] 디저트 메뉴판 관리
+#### 🔅 TODO 페이지 접근시 최초 데이터 Read & Rendering
+- [ ] 페이지에 최초로 로딩될 때 localStorage에  에스프레소 메뉴를 읽어온다.
+- [ ] 에스프레소 메뉴를 페이지에 그려준다.
+#### 🔅 TODO 품절 상태 관리
+- [ ] 품절 상태를 표시해준다.
+  - [ ] 품절 버튼을 추가한다.
+  - [ ] 품절 버튼을 클릭하면 localStorage에 상태값이 저장된다.
+  - [ ] 클릭이벤트에서 가장 가까운 li태그의 class속성 값에 `sold-out` class를 추가한다.
+##### 📌 품절 상태 메뉴의 마크업
 ```js
 <li class="menu-list-item d-flex items-center py-2">
   <span class="w-100 pl-2 menu-name sold-out">${name}</span>
