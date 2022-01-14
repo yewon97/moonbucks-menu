@@ -6,7 +6,7 @@ const store = {
     localStorage.setItem('menu', JSON.stringify(menu));
   },
   getLocalStorage() {
-    localStorage.getItem('menu');
+    return localStorage.getItem('menu');
   },
 };
 
