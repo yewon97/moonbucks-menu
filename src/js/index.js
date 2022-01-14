@@ -29,6 +29,7 @@ function App() {
       this.menu = store.getLocalStorage();
     }
     render();
+    initEventListeners();
   };
 
   // 데이터 그려주는 로직 (재사용)
@@ -65,7 +66,7 @@ function App() {
 
   // 메뉴 개수 카운팅
   const updateMenuCount = () => {
-    const menuCount = $('#menu-list').querySelectorAll('li').length;
+    const menuCount = this.menu[this.currentCategory].length
     $('.menu-count').innerText = `총 ${menuCount} 개`;
   };
   // 메뉴를 추가할 때
@@ -88,7 +89,7 @@ function App() {
     const updatedMenuName = prompt('메뉴명을 수정하세요.', $menuName.innerText);
     this.menu[this.currentCategory][menuId].name = updatedMenuName;
     store.setLocalStorage(this.menu);
-    $menuName.innerText = updatedMenuName;
+    render();
   };
   // 메뉴 삭제 함수
   const removeMenuName = (e) => {
@@ -96,8 +97,7 @@ function App() {
       const menuId = e.target.closest('li').dataset.menuId;
       this.menu[this.currentCategory].splice(menuId, 1); // index:menuId인 것 1개만 삭제한다.
       store.setLocalStorage(this.menu); // localStorage 업데이트해주기
-      e.target.closest('li').remove();
-      updateMenuCount();
+      render();
     }
   };
   // 메뉴 품절 함수
@@ -110,7 +110,8 @@ function App() {
     render();
   }
 
-  // 메뉴 수정할 때 & 메뉴 삭제 할 때 & 메뉴 품절 일 때
+  const initEventListeners = () => {
+      // 메뉴 수정할 때 & 메뉴 삭제 할 때 & 메뉴 품절 일 때
   $('#menu-list').addEventListener('click', (e) => {
     // 메뉴 수정
     if (e.target.classList.contains('menu-edit-button')) {
@@ -157,6 +158,7 @@ function App() {
       render();
     }
   });
+  }
 }
 
 // new 키워드를 사용하여 생성자 함수를 호출하게 되면 이때의 this는 "만들어질 객체"를 참조한다.
