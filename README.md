@@ -72,6 +72,9 @@
 #### 🔅 TODO localStorage Read & Write
 - [ ] [localStorage](https://developer.mozilla.org/ko/docs/Web/API/Window/localStorage)에 데이터를 저장하여 새로고침해도 데이터가 남아있게 한다.
   - [ ] localStorage에 데이터를 저장한다.
+    - [ ] 메뉴를 추가할 때
+    - [ ] 메뉴를 수정할 때
+    - [ ] 메뉴를 삭제할 때
   - [ ] localStorage에 데이터를 읽어온다.
 #### 🔅 TODO 카테고리별 메뉴판 관리
 - [ ] 각각의 종류별로 메뉴판을 관리할 수 있게 만든다.
