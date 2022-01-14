@@ -3,10 +3,10 @@ const $ = (selector) => document.querySelector(selector);
 const store = {
   setLocalStorage(menu) {
     // JSON.stringify() -> 값이나 객체를 JSON 문자열로 변환
-    localStorage.setItem("menu", JSON.stringify(menu));
+    localStorage.setItem('menu', JSON.stringify(menu));
   },
   getLocalStorage() {
-    localStorage.getItem("menu");
+    localStorage.getItem('menu');
   },
 };
 
@@ -14,6 +14,11 @@ function App() {
   // 상태(변하는 데이터, 이 앱에서 변하는 것이 무엇인가?) - 메뉴명
   this.menu = [];
 
+  // 메뉴 개수 카운팅
+  const updateMenuCount = () => {
+    const menuCount = $('#espresso-menu-list').querySelectorAll('li').length;
+    $('.menu-count').innerText = `총 ${menuCount} 개`;
+  };
   // 메뉴를 추가할 때
   const addMenuName = () => {
     if ($('#espresso-menu-name').value === '') {
@@ -21,7 +26,8 @@ function App() {
       return;
     }
     const espressoMenuName = $('#espresso-menu-name').value;
-    this.menu.push({ name : espressoMenuName });
+    this.menu.push({ name: espressoMenuName });
+    store.setLocalStorage(this.menu);
     const template = this.menu
       .map((item) => {
         return `
@@ -45,11 +51,6 @@ function App() {
     $('#espresso-menu-list').innerHTML = template;
     updateMenuCount();
     $('#espresso-menu-name').value = '';
-  };
-  // 메뉴 개수 카운팅
-  const updateMenuCount = () => {
-    const menuCount = $('#espresso-menu-list').querySelectorAll('li').length;
-    $('.menu-count').innerText = `총 ${menuCount} 개`;
   };
   // 메뉴 수정 함수
   const updateMenuName = (e) => {
