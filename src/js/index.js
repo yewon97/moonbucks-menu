@@ -55,7 +55,7 @@ function App() {
   // 메뉴 수정 함수
   const updateMenuName = (e) => {
     // data-menu-id 속성을 이용해서 값을 가져올 수 있음
-    const menuId = e.target.closest("li").dataset.menuId;
+    const menuId = e.target.closest('li').dataset.menuId;
     const $menuName = e.target.closest('li').querySelector('.menu-name');
     const updatedMenuName = prompt('메뉴명을 수정하세요.', $menuName.innerText);
     this.menu[menuId].name = updatedMenuName;
@@ -65,6 +65,9 @@ function App() {
   // 메뉴 삭제 함수
   const removeMenuName = (e) => {
     if (confirm('정말 삭제하시겠습니까?')) {
+      const menuId = e.target.closest('li').dataset.menuId;
+      this.menu.splice(menuId, 1); // index:menuId인 것 1개만 삭제한다.
+      store.setLocalStorage(this.menu); // localStorage 업데이트해주기
       e.target.closest('li').remove();
       updateMenuCount();
     }
