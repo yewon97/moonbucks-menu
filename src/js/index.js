@@ -7,6 +7,14 @@
 const $ = (selector) => document.querySelector(selector);
 
 function App() {
+  // 이벤트 위임하기 - e.target
+  $('#espresso-menu-list').addEventListener('click', (e) => {
+    if(e.target.classList.contains('menu-edit-button')) {
+      const menuName = $('.menu-name').innerText;
+      prompt('메뉴명을 수정하세요.', menuName);
+    }
+  })
+
   $('#espresso-menu-form').addEventListener('submit', (e) => {
     e.preventDefault();
   });
@@ -41,7 +49,7 @@ function App() {
     $('#espresso-menu-name').value = '';
   };
 
-  $('#espresso-menu-submit-button').addEventListener('click', addMenuName);
+  $('#espresso-menu-submit-button').addEventListener('click', () => addMenuName());
 
   $('#espresso-menu-name').addEventListener('keypress', (e) => {
     if (e.key !== 'Enter') {
