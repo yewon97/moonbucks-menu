@@ -25,7 +25,7 @@ function App() {
   // App이라는 함수가 인스턴스로 생성이 될 때 로컬스토리지 안에 있는 것을 불러오면 좋을 것 같음
   // App이 생성될 때 실행을 하기 위해서 초기화 한다는 말의 init 메서드를 생성
   this.init = () => {
-    if (store.getLocalStorage().length > 1) {
+    if (store.getLocalStorage()) {
       this.menu = store.getLocalStorage();
     }
     render();
