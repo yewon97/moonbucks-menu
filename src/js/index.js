@@ -38,6 +38,7 @@ function App() {
       // $(".menu-count").innerHTML = `총 ${$('#espresso-menu-list').childElementCount} 개`;
       const menuCount = $('#espresso-menu-list').querySelectorAll("li").length;
       $(".menu-count").innerText = `총 ${menuCount} 개`
+      $('#espresso-menu-name').value = ""; // input 빈 값으로 초기화
     }
   });
 }
