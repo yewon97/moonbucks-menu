@@ -1,9 +1,3 @@
-// 1. 이벤트 위임
-// 2. 요구사항을 전략적으로 접근, 단계별 세세하게 나누기
-// 3. DOM 요소 가져올 때는 $표시를 써서 변수처럼 사용
-// 4. 새롭게 알게 된 메서드 innerText, innerHTML, insertAdjacentHtml, closest, e.target
-// 5. 상태값의 중요성
-
 const $ = (selector) => document.querySelector(selector);
 
 function App() {
@@ -36,13 +30,11 @@ function App() {
     updateMenuCount();
     $('#espresso-menu-name').value = '';
   };
-
   // 메뉴 개수 카운팅
   const updateMenuCount = () => {
     const menuCount = $('#espresso-menu-list').querySelectorAll('li').length;
     $('.menu-count').innerText = `총 ${menuCount} 개`;
   };
-
   // 메뉴 수정 함수
   const updateMenuName = (e) => {
     const $menuName = e.target.closest('li').querySelector('.menu-name');
@@ -75,7 +67,7 @@ function App() {
   });
 
   // 확인 버튼을 눌렀을 때
-  $('#espresso-menu-submit-button').addEventListener('click', () => addMenuName());
+  $('#espresso-menu-submit-button').addEventListener('click', addMenuName);
 
   // 엔터키를 눌렀을 때
   $('#espresso-menu-name').addEventListener('keypress', (e) => {
