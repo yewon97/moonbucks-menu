@@ -1,15 +1,5 @@
-const $ = (selector) => document.querySelector(selector);
-
-const store = {
-  setLocalStorage(menu) {
-    // JSON.stringify() -> 값이나 객체를 JSON 문자열로 변환
-    localStorage.setItem('menu', JSON.stringify(menu));
-  },
-  getLocalStorage() {
-    // 배열을 순회할 수 있게 문자열을 JSON.parse을 이용해 객체로 바꿔줌
-    return JSON.parse(localStorage.getItem('menu'));
-  },
-};
+import {$} from "./utils/dom.js"
+import store from "./store/index.js"
 
 function App() {
   // 객체로 각 카테고리 관리하기

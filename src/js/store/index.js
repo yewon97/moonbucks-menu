@@ -8,3 +8,4 @@ const store = {
 };
 
 export default store;
+// store 외부로~
