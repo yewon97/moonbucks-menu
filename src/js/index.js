@@ -80,7 +80,7 @@ function App() {
     const menuId = e.target.closest('li').dataset.menuId;
     const $menuName = e.target.closest('li').querySelector('.menu-name');
     const updatedMenuName = prompt('메뉴명을 수정하세요.', $menuName.innerText);
-    this.menu[menuId].name = updatedMenuName;
+    this.menu[this.currentCategory][menuId].name = updatedMenuName;
     store.setLocalStorage(this.menu);
     $menuName.innerText = updatedMenuName;
   };
@@ -88,7 +88,7 @@ function App() {
   const removeMenuName = (e) => {
     if (confirm('정말 삭제하시겠습니까?')) {
       const menuId = e.target.closest('li').dataset.menuId;
-      this.menu.splice(menuId, 1); // index:menuId인 것 1개만 삭제한다.
+      this.menu[this.currentCategory].splice(menuId, 1); // index:menuId인 것 1개만 삭제한다.
       store.setLocalStorage(this.menu); // localStorage 업데이트해주기
       e.target.closest('li').remove();
       updateMenuCount();
