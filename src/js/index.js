@@ -44,15 +44,14 @@ function App() {
   };
 
   // 메뉴 수정 함수
-  const updateMenuName = () => {
+  const updateMenuName = (e) => {
     const $menuName = e.target.closest('li').querySelector('.menu-name');
     const updatedMenuName = prompt('메뉴명을 수정하세요.', $menuName.innerText);
     $menuName.innerText = updatedMenuName;
   };
   // 메뉴 삭제 함수
-  const removeMenuName = () => {
-    const removeMenuName = confirm('정말 삭제하시겠습니까?');
-    if (removeMenuName) {
+  const removeMenuName = (e) => {
+    if (confirm('정말 삭제하시겠습니까?')) {
       e.target.closest('li').remove();
       updateMenuCount();
     }
@@ -62,11 +61,11 @@ function App() {
   $('#espresso-menu-list').addEventListener('click', (e) => {
     // 메뉴 수정
     if (e.target.classList.contains('menu-edit-button')) {
-      updateMenuName();
+      updateMenuName(e);
     }
     // 메뉴 삭제
     if (e.target.classList.contains('menu-remove-button')) {
-      removeMenuName();
+      removeMenuName(e);
     }
   });
 
