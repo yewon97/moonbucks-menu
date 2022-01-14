@@ -14,6 +14,14 @@ function App() {
   // 상태(변하는 데이터, 이 앱에서 변하는 것이 무엇인가?) - 메뉴명
   this.menu = [];
 
+  // App이라는 함수가 인스턴스로 생성이 될 때 로컬스토리지 안에 있는 것을 불러오면 좋을 것 같음
+  // App이 생성될 때 실행을 하기 위해서 초기화 한다는 말의 init 메서드를 생성
+  this.init = () => {
+    if(store.getLocalStorage().length > 1) {
+      this.menu = store.getLocalStorage();
+    }
+  }
+
   // 메뉴 개수 카운팅
   const updateMenuCount = () => {
     const menuCount = $('#espresso-menu-list').querySelectorAll('li').length;
@@ -104,3 +112,5 @@ function App() {
 
 // new 키워드를 사용하여 생성자 함수를 호출하게 되면 이때의 this는 "만들어질 객체"를 참조한다.
 const app = new App();
+// 인스턴스가 생성이되고, app.init()이 실행되면서 로컬스토리지에 있는 값을 불러옴
+app.init();
