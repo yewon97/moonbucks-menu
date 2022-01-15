@@ -3,6 +3,13 @@ import store from './store/index.js';
 
 const BASE_URL = 'http://localhost:3000/api';
 
+const MenuApi = {
+  async getAllMenuByCategory(category) {
+    const response = await fetch(`${BASE_URL}/category/${category}/menu`);
+    return response.json();
+  },
+};
+
 function App() {
   // 객체로 각 카테고리 관리하기
   this.menu = {
@@ -16,10 +23,8 @@ function App() {
 
   // App이라는 함수가 인스턴스로 생성이 될 때 로컬스토리지 안에 있는 것을 불러오면 좋을 것 같음
   // App이 생성될 때 실행을 하기 위해서 초기화 한다는 말의 init 메서드를 생성
-  this.init = () => {
-    if (store.getLocalStorage()) {
-      this.menu = store.getLocalStorage();
-    }
+  this.init = async () => {
+    this.menu[this.currentCategory] = await MenuApi.getAllMenuByCategory(this.currentCategory);
     render();
     initEventListeners();
   };
@@ -75,10 +80,9 @@ function App() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ name: menuName }),
-    })
-      .then((response) => {
-        return response.json();
-      });
+    }).then((response) => {
+      return response.json();
+    });
 
     await fetch(`${BASE_URL}/category/${this.currentCategory}/menu`)
       .then((response) => {
