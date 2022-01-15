@@ -1,5 +1,7 @@
-import {$} from "./utils/dom.js"
-import store from "./store/index.js"
+import { $ } from './utils/dom.js';
+import store from './store/index.js';
+
+const BASE_URL = 'http://localhost:3000/api';
 
 function App() {
   // 객체로 각 카테고리 관리하기
@@ -25,10 +27,10 @@ function App() {
   // 데이터 그려주는 로직 (재사용)
   const render = () => {
     const template = this.menu[this.currentCategory]
-      .map((item, index) => {
+      .map((menuItem, index) => {
         return `
       <li data-menu-id="${index}" class="menu-list-item d-flex items-center py-2">
-      <span class="${item.soldOut ? "sold-out" : ""} w-100 pl-2 menu-name">${item.name}</span>
+      <span class="${menuItem.soldOut ? 'sold-out' : ''} w-100 pl-2 menu-name">${menuItem.name}</span>
       <button
         type="button"
         class="bg-gray-50 text-gray-500 text-sm mr-1 menu-sold-out-button"
@@ -56,7 +58,7 @@ function App() {
 
   // 메뉴 개수 카운팅
   const updateMenuCount = () => {
-    const menuCount = this.menu[this.currentCategory].length
+    const menuCount = this.menu[this.currentCategory].length;
     $('.menu-count').innerText = `총 ${menuCount} 개`;
   };
   // 메뉴를 추가할 때
@@ -65,11 +67,26 @@ function App() {
       alert('값을 입력해주세요!');
       return;
     }
-    const MenuName = $('#menu-name').value;
-    this.menu[this.currentCategory].push({ name: MenuName });
-    store.setLocalStorage(this.menu);
-    render();
-    $('#menu-name').value = '';
+    const menuName = $('#menu-name').value;
+
+    fetch(`${BASE_URL}/category/${this.currentCategory}/menu`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name: menuName }),
+    })
+      .then((response) => {
+        return response.json();
+        // console.log(response);
+      })
+      .then((data) => {
+        console.log(data);
+      });
+    // this.menu[this.currentCategory].push({ name: menuName });
+    // store.setLocalStorage(this.menu);
+    // render();
+    // $('#menu-name').value = '';
   };
   // 메뉴 수정 함수
   const updateMenuName = (e) => {
@@ -98,57 +115,57 @@ function App() {
     // true 의 ! => false
     store.setLocalStorage(this.menu);
     render();
-  }
+  };
 
   const initEventListeners = () => {
-      // 메뉴 수정할 때 & 메뉴 삭제 할 때 & 메뉴 품절 일 때
-  $('#menu-list').addEventListener('click', (e) => {
-    // 메뉴 수정
-    if (e.target.classList.contains('menu-edit-button')) {
-      updateMenuName(e);
-      return; // 불필요한 if문 밑의 연산들이 작동안하게 하기 위해서 쓴다
-    }
-    // 메뉴 삭제
-    if (e.target.classList.contains('menu-remove-button')) {
-      removeMenuName(e);
-      return;
-    }
-    // 메뉴 품절
-    if (e.target.classList.contains('menu-sold-out-button')) {
-      soldOutMenu(e);
-      return;
-    }
-  });
+    // 메뉴 수정할 때 & 메뉴 삭제 할 때 & 메뉴 품절 일 때
+    $('#menu-list').addEventListener('click', (e) => {
+      // 메뉴 수정
+      if (e.target.classList.contains('menu-edit-button')) {
+        updateMenuName(e);
+        return; // 불필요한 if문 밑의 연산들이 작동안하게 하기 위해서 쓴다
+      }
+      // 메뉴 삭제
+      if (e.target.classList.contains('menu-remove-button')) {
+        removeMenuName(e);
+        return;
+      }
+      // 메뉴 품절
+      if (e.target.classList.contains('menu-sold-out-button')) {
+        soldOutMenu(e);
+        return;
+      }
+    });
 
-  // form태그 새로고침 막아주는 것
-  $('#menu-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-  });
+    // form태그 새로고침 막아주는 것
+    $('#menu-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+    });
 
-  // 확인 버튼을 눌렀을 때
-  $('#menu-submit-button').addEventListener('click', addMenuName);
+    // 확인 버튼을 눌렀을 때
+    $('#menu-submit-button').addEventListener('click', addMenuName);
 
-  // 엔터키를 눌렀을 때
-  $('#menu-name').addEventListener('keypress', (e) => {
-    if (e.key !== 'Enter') {
-      return;
-    }
-    addMenuName();
-  });
+    // 엔터키를 눌렀을 때
+    $('#menu-name').addEventListener('keypress', (e) => {
+      if (e.key !== 'Enter') {
+        return;
+      }
+      addMenuName();
+    });
 
-  // 카테고리별 메뉴판 관리하기
-  $('nav').addEventListener('click', (e) => {
-    // 예외처리
-    // nav에 이벤트리스너를 적용했기 때문에 카테고리 사이 빈칸을 눌러도 이벤트가 실행됨
-    const isCategoryButton = e.target.classList.contains('cafe-category-name');
-    if (isCategoryButton) {
-      const categoryName = e.target.dataset.categoryName;
-      this.currentCategory = categoryName;
-      $('#category-title').innerText = `${e.target.innerText} 메뉴 관리`;
-      render();
-    }
-  });
-  }
+    // 카테고리별 메뉴판 관리하기
+    $('nav').addEventListener('click', (e) => {
+      // 예외처리
+      // nav에 이벤트리스너를 적용했기 때문에 카테고리 사이 빈칸을 눌러도 이벤트가 실행됨
+      const isCategoryButton = e.target.classList.contains('cafe-category-name');
+      if (isCategoryButton) {
+        const categoryName = e.target.dataset.categoryName;
+        this.currentCategory = categoryName;
+        $('#category-title').innerText = `${e.target.innerText} 메뉴 관리`;
+        render();
+      }
+    });
+  };
 }
 
 // new 키워드를 사용하여 생성자 함수를 호출하게 되면 이때의 this는 "만들어질 객체"를 참조한다.
