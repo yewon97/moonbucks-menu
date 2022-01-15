@@ -78,10 +78,6 @@ function App() {
     })
       .then((response) => {
         return response.json();
-        // console.log(response);
-      })
-      .then((data) => {
-        console.log(data);
       });
 
     await fetch(`${BASE_URL}/category/${this.currentCategory}/menu`)
@@ -89,13 +85,10 @@ function App() {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        this.menu[this.currentCategory] = data;
+        render();
+        $('#menu-name').value = '';
       });
-
-    // this.menu[this.currentCategory].push({ name: menuName });
-    // store.setLocalStorage(this.menu);
-    // render();
-    // $('#menu-name').value = '';
   };
   // 메뉴 수정 함수
   const updateMenuName = (e) => {
