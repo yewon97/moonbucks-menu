@@ -8,6 +8,31 @@ const MenuApi = {
     const response = await fetch(`${BASE_URL}/category/${category}/menu`);
     return response.json();
   },
+  async createMenu(category, name) {
+    const response = await fetch(`${BASE_URL}/category/${category}/menu`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name }),
+    });
+    if (!response.ok) {
+      console.error('에러가 발생했습니다.');
+    }
+  },
+  async updateMenu(category, name, menuId) {
+    const response = await fetch(`${BASE_URL}/category/${category}/menu/${menuId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name }),
+    });
+    if (!response.ok) {
+      console.error('에러가 발생했습니다.');
+    }
+    return response.json();
+  },
 };
 
 function App() {
@@ -34,7 +59,7 @@ function App() {
     const template = this.menu[this.currentCategory]
       .map((menuItem, index) => {
         return `
-      <li data-menu-id="${index}" class="menu-list-item d-flex items-center py-2">
+      <li data-menu-id="${menuItem.id}" class="menu-list-item d-flex items-center py-2">
       <span class="${menuItem.soldOut ? 'sold-out' : ''} w-100 pl-2 menu-name">${menuItem.name}</span>
       <button
         type="button"
@@ -74,28 +99,21 @@ function App() {
     }
     const menuName = $('#menu-name').value;
 
-    await fetch(`${BASE_URL}/category/${this.currentCategory}/menu`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name: menuName }),
-    }).then((response) => {
-      return response.json();
-    });
-
+    await MenuApi.createMenu(this.currentCategory, menuName);
     this.menu[this.currentCategory] = await MenuApi.getAllMenuByCategory(this.currentCategory);
     render();
     $('#menu-name').value = '';
   };
   // 메뉴 수정 함수
-  const updateMenuName = (e) => {
+  const updateMenuName = async (e) => {
     // data-menu-id 속성을 이용해서 값을 가져올 수 있음
     const menuId = e.target.closest('li').dataset.menuId;
     const $menuName = e.target.closest('li').querySelector('.menu-name');
     const updatedMenuName = prompt('메뉴명을 수정하세요.', $menuName.innerText);
-    this.menu[this.currentCategory][menuId].name = updatedMenuName;
-    store.setLocalStorage(this.menu);
+    await MenuApi.updateMenu(this.currentCategory, updatedMenuName, menuId);
+    this.menu[this.currentCategory] = await MenuApi.getAllMenuByCategory(this.currentCategory);
+    // this.menu[this.currentCategory][menuId].name = updatedMenuName;
+    // store.setLocalStorage(this.menu);
     render();
   };
   // 메뉴 삭제 함수
