@@ -84,15 +84,9 @@ function App() {
       return response.json();
     });
 
-    await fetch(`${BASE_URL}/category/${this.currentCategory}/menu`)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        this.menu[this.currentCategory] = data;
-        render();
-        $('#menu-name').value = '';
-      });
+    this.menu[this.currentCategory] = await MenuApi.getAllMenuByCategory(this.currentCategory);
+    render();
+    $('#menu-name').value = '';
   };
   // 메뉴 수정 함수
   const updateMenuName = (e) => {
