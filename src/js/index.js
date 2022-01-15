@@ -179,7 +179,7 @@ function App() {
     });
 
     // 카테고리별 메뉴판 관리하기
-    $('nav').addEventListener('click', (e) => {
+    $('nav').addEventListener('click', async (e) => {
       // 예외처리
       // nav에 이벤트리스너를 적용했기 때문에 카테고리 사이 빈칸을 눌러도 이벤트가 실행됨
       const isCategoryButton = e.target.classList.contains('cafe-category-name');
@@ -187,6 +187,7 @@ function App() {
         const categoryName = e.target.dataset.categoryName;
         this.currentCategory = categoryName;
         $('#category-title').innerText = `${e.target.innerText} 메뉴 관리`;
+        this.menu[this.currentCategory] = await MenuApi.getAllMenuByCategory(this.currentCategory);
         render();
       }
     });
