@@ -1,51 +1,66 @@
 const BASE_URL = 'http://localhost:3000/api';
 
-const MenuApi = {
-  async getAllMenuByCategory(category) {
-    const response = await fetch(`${BASE_URL}/category/${category}/menu`);
-    return response.json();
-  },
-  async createMenu(category, name) {
-    const response = await fetch(`${BASE_URL}/category/${category}/menu`, {
+const HTTP_METHOD = {
+  POST(data) {
+    return {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name }),
-    });
-    if (!response.ok) {
-      console.error('에러가 발생했습니다.');
-    }
+      body: JSON.stringify(data),
+    };
   },
-  async updateMenu(category, name, menuId) {
-    const response = await fetch(`${BASE_URL}/category/${category}/menu/${menuId}`, {
+  PUT(data) {
+    return {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name }),
-    });
-    if (!response.ok) {
-      console.error('에러가 발생했습니다.');
-    }
-    return response.json();
+      body: data ? JSON.stringify(data) : null,
+    };
   },
-  async toggleSoldOutMenu(category, menuId) {
-    const response = await fetch(`${BASE_URL}/category/${category}/menu/${menuId}/soldout`, {
-      method: 'PUT',
-    });
-    if (!response.ok) {
-      console.error('에러가 발생했습니다.');
-    }
+  DELETE() {
+    return {
+      method: 'DELETE',
+    };
   },
-  async deleteMenu(category, menuId) {
-    const response = await fetch(`${BASE_URL}/category/${category}/menu/${menuId}`, {
-      method: "DELETE",
-    });
-    if (!response.ok) {
-      console.error('에러가 발생했습니다.');
-    }
+};
+
+const request = async (url, option) => {
+  const response = await fetch(url, option);
+  if (!response.ok) {
+    alert('에러가 발생했습니다.');
+    console.error(e);
   }
+  return response.json();
+};
+
+const requestWithoutJson = async (url, option) => {
+  const response = await fetch(url, option);
+  if (!response.ok) {
+    alert('에러가 발생했습니다.');
+    console.error(e);
+  }
+  return response;
+};
+
+
+const MenuApi = {
+  getAllMenuByCategory(category) {
+    return request(`${BASE_URL}/category/${category}/menu`);
+  },
+  createMenu(category, name) {
+    return request(`${BASE_URL}/category/${category}/menu`, HTTP_METHOD.POST({ name }));
+  },
+  updateMenu(category, name, menuId) {
+    return request(`${BASE_URL}/category/${category}/menu/${menuId}`, HTTP_METHOD.PUT({ name }));
+  },
+  toggleSoldOutMenu(category, menuId) {
+    return request(`${BASE_URL}/category/${category}/menu/${menuId}/soldout`, HTTP_METHOD.PUT());
+  },
+  deleteMenu(category, menuId) {
+    return requestWithoutJson(`${BASE_URL}/category/${category}/menu/${menuId}`, HTTP_METHOD.DELETE());
+  },
 };
 
 export default MenuApi;
